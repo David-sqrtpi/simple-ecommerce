@@ -15,10 +15,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product add(Product product) {
+    public void add(Product product) {
         productRepository.save(product);
-
-        return product;
     }
 
     public boolean existsByUuid(String uuid) {

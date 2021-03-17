@@ -23,30 +23,43 @@ public class ProductApi {
     }
 
     @PostMapping("add")
-    public Product add(@RequestBody Product product) {
+    public String add(@RequestBody Product product) {
 
-        if(findByUuid(product.getUuid())) {
-            return null;
+        if(ExistsByUuid(product.getUuid())) {
+            return "This product exists, can't add it to the application";
         }
 
         product.setUuid(uuidGenerator.generateUuid());
+        productService.add(product);
 
-        return productService.add(product);
+        return "Product added with uuid " +
+                product.getUuid() +
+                " and sku " +
+                product.getSku();
     }
 
-    @DeleteMapping("delete-by-id")
-    public String deleteByUuid(String uuid) {
+    @DeleteMapping("delete-by-id/{uuid}")
+    public String deleteByUuid(@PathVariable String uuid) {
         productService.deleteById(uuid);
         return "deleted product with uuid " + uuid;
     }
 
-    @PutMapping("modify-by-id")
-    public Product modify(Product product) {
+    @PutMapping("modify-by-id/{uuid}")
+    public String modify(@PathVariable String uuid, @RequestBody Product product) {
+
+        if(!ExistsByUuid(uuid)) {
+            return "This product doesn't exists, can't modify in application";
+        }
+
+        product.setUuid(uuid);
         productService.modify(product);
-        return product;
+
+        return "Product with uuid " +
+                uuid +
+                " has been modified";
     }
 
-    private boolean findByUuid(String uuid) {
+    private boolean ExistsByUuid(String uuid) {
         return productService.existsByUuid(uuid);
     }
 }
