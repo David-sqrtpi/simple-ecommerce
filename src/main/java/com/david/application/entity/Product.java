@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product {
 
-    private String name, sku, description;
+    private String name, description, uuid;
+
     private int price;
+
+    private long sku;
 }

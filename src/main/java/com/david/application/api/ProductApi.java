@@ -19,4 +19,16 @@ public class ProductApi {
 
         return productService.listAll();
     }
+
+    public Product add(Product product) {
+        return product;
+    }
+
+    public Product delete(Product product) {
+        return product;
+    }
+
+    public Product modify(Product product) {
+        return product;
+    }
 }
