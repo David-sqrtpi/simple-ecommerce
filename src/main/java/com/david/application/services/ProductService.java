@@ -22,8 +22,14 @@ public class ProductService {
     }
 
     public boolean existsByUuid(String uuid) {
-
         return productRepository.existsByUuid(uuid);
+    }
 
+    public void deleteById(String uuid) {
+        productRepository.deleteById(uuid);
+    }
+
+    public void modify(Product product) {
+        productRepository.save(product);
     }
 }

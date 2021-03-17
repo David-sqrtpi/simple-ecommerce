@@ -2,10 +2,9 @@ package com.david.application.api;
 
 import com.david.application.entity.Product;
 import com.david.application.services.ProductService;
+import com.david.application.services.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("product")
@@ -15,6 +14,9 @@ public class ProductApi {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    UuidGenerator uuidGenerator;
+
     @GetMapping("list-all")
     public Iterable<Product> listAll() {
         return productService.listAll();
@@ -23,21 +25,28 @@ public class ProductApi {
     @PostMapping("add")
     public Product add(@RequestBody Product product) {
 
-        if(productService.existsByUuid(product.getUuid())) {
-            product.setDescription("It exists");
-            return product;
+        if(findByUuid(product.getUuid())) {
+            return null;
         }
 
-        product.setUuid(UUID.randomUUID().toString()); //Add a random uuid to the product that just created
+        product.setUuid(uuidGenerator.generateUuid());
+
         return productService.add(product);
     }
 
+    @DeleteMapping("delete-by-id")
+    public String deleteByUuid(String uuid) {
+        productService.deleteById(uuid);
+        return "deleted product with uuid " + uuid;
+    }
 
-    public Product delete(Product product) {
+    @PutMapping("modify-by-id")
+    public Product modify(Product product) {
+        productService.modify(product);
         return product;
     }
 
-    public Product modify(Product product) {
-        return product;
+    private boolean findByUuid(String uuid) {
+        return productService.existsByUuid(uuid);
     }
 }
