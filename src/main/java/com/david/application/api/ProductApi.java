@@ -5,6 +5,8 @@ import com.david.application.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("product")
 @CrossOrigin
@@ -20,6 +22,13 @@ public class ProductApi {
 
     @PostMapping("add")
     public Product add(@RequestBody Product product) {
+
+        if(productService.existsByUuid(product.getUuid())) {
+            product.setDescription("It exists");
+            return product;
+        }
+
+        product.setUuid(UUID.randomUUID().toString()); //Add a random uuid to the product that just created
         return productService.add(product);
     }
 

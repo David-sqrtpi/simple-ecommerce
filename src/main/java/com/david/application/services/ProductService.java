@@ -20,4 +20,10 @@ public class ProductService {
 
         return product;
     }
+
+    public boolean existsByUuid(String uuid) {
+
+        return productRepository.existsByUuid(uuid);
+
+    }
 }

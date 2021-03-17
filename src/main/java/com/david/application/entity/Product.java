@@ -1,5 +1,6 @@
 package com.david.application.entity;
 
+import com.david.application.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,13 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Product {
 
+    private String name;
+    private long sku;
+    private String description;
+    private int price;
+    private ProductType productType;
+
     @Id
     private String uuid;
-
-    private long sku;
-
-    private String name, description;
-
-    private int price;
 
 }
