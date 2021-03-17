@@ -40,6 +40,10 @@ public class ProductApi {
 
     @DeleteMapping("delete-by-id/{uuid}")
     public String deleteByUuid(@PathVariable String uuid) {
+
+        if(ExistsByUuid(uuid)) {
+            return "This product doesn't exists, can't delete it of the application";
+        }
         productService.deleteById(uuid);
         return "deleted product with uuid " + uuid;
     }
