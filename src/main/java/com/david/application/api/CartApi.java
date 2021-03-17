@@ -1,6 +1,7 @@
 package com.david.application.api;
 
 import com.david.application.entity.Product;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("cart")
 public class CartApi {
 
+    @PostMapping("add")
     public Product add(Product product) {
         return product;
     }

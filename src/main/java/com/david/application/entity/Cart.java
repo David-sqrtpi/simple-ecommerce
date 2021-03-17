@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.ArrayList;
 
 @Entity
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class Cart {
 
+    @Id
     private String uuid;
     private ArrayList<Product> products;
     private CartState cartState;

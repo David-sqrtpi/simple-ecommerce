@@ -1,19 +1,25 @@
 package com.david.application.entity;
 
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Enabled
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
 
-    private String name, description, uuid;
+    @Id
+    private String uuid;
+
+    private long sku;
+
+    private String name, description;
 
     private int price;
 
-    private long sku;
 }
