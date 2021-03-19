@@ -1,6 +1,6 @@
 package com.david.application.enums;
 
-public enum CartState {
+public enum CartStatus {
 
     PENDING,
     COMPLETED;

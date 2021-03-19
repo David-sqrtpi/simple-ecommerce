@@ -30,4 +30,8 @@ public class ProductService {
     public void modify(Product product) {
         productRepository.save(product);
     }
+
+    public Product getByUuid(String uuid) {
+        return productRepository.getOne(uuid);
+    }
 }

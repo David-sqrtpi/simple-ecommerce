@@ -2,7 +2,6 @@ package com.david.application.api;
 
 import com.david.application.entity.Product;
 import com.david.application.services.ProductService;
-import com.david.application.services.UuidGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +28,6 @@ public class ProductApi {
             return "This product exists, can't add it to the application";
         }
 
-        product.setUuid(uuidGenerator.generateUuid());
         productService.add(product);
 
         return "Product added with uuid " +
@@ -55,7 +53,6 @@ public class ProductApi {
             return "This product doesn't exists, can't modify in application";
         }
 
-        product.setUuid(uuid);
         productService.modify(product);
 
         return "Product with uuid " +

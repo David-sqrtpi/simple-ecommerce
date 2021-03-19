@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.UUID;
+
 
 @Entity
 @Data
@@ -21,6 +23,6 @@ public class Product {
     private ProductType productType;
 
     @Id
-    private String uuid;
+    private final String uuid = UUID.randomUUID().toString();
 
 }
