@@ -20,4 +20,6 @@ public class Product {
 
     private String uuid;
 
+    //TODO don't forget about discount products
+
 }
