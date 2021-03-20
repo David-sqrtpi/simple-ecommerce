@@ -22,6 +22,10 @@ public class CartService {
         return carts.values();
     }
 
+    public void addItem(){
+
+    }
+
     public String getTotal(Cart cart) {
         cart.setCartStatus(CartStatus.COMPLETED);
         return "Total is: " + cart.getTotal();

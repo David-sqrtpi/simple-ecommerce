@@ -21,9 +21,6 @@ public class CartApi {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private ProductService productService;
-
     @PostMapping("create")
     public void create(Cart cart) {
         cartService.createCard(cart);
@@ -41,7 +38,7 @@ public class CartApi {
 
     @PostMapping("add/{cartUuid}")
     public void addItem(@RequestParam String productUuid, @RequestParam int quantity, @PathVariable String cartUuid) {
-        itemService.addItem(cartService.getOne(cartUuid), productService.getOne(productUuid), quantity);
+        itemService.addItem(cartUuid, productUuid, quantity);
     }
     
     @PostMapping("checkout/{cartUuid}")
