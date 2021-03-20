@@ -24,7 +24,7 @@ public class ProductService {
     }
 
     public void modify(Product product) { //TODO Make this stuff working
-
+        products.replace(product.getUuid(), product);
     }
 
     public Product getOne(String uuid) {

@@ -4,6 +4,7 @@ import com.david.application.entity.Cart;
 import com.david.application.entity.Product;
 import com.david.application.services.CartService;
 import com.david.application.services.ItemService;
+import com.david.application.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +21,15 @@ public class CartApi {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ProductService productService;
+
     @PostMapping("create")
-    public String create(Cart cart) {
+    public void create(Cart cart) {
         cartService.createCard(cart);
-        return "Cart created: " + cart.toString();
     }
 
-    @GetMapping("get")
+    @GetMapping("get") //TODO If there aren't any cart throw an exception
     public Collection<Cart> getAll() {
         return cartService.getAll();
     }
@@ -38,7 +41,12 @@ public class CartApi {
 
     @PostMapping("add/{cartUuid}")
     public void addItem(@RequestParam String productUuid, @RequestParam int quantity, @PathVariable String cartUuid) {
-        itemService.addItem(cartService.getOne(cartUuid), productUuid, quantity);
+        itemService.addItem(cartService.getOne(cartUuid), productService.getOne(productUuid), quantity);
+    }
+    
+    @PostMapping("checkout/{cartUuid}")
+    public String getTotal(@PathVariable String cartUuid){
+        return cartService.getTotal(cartService.getOne(cartUuid));
     }
 
     public Product delete (Product product) {

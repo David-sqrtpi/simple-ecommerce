@@ -2,6 +2,7 @@ package com.david.application.services;
 
 import com.david.application.entity.Cart;
 import com.david.application.entity.Item;
+import com.david.application.enums.CartStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,6 @@ import java.util.HashMap;
 
 @Service
 public class CartService {
-
-    @Autowired
-    ProductService productService;
 
     private final HashMap<String, Cart> carts = new HashMap<>();
 
@@ -24,8 +22,9 @@ public class CartService {
         return carts.values();
     }
 
-    public String check(String uuid) {
-        return "Total is: ";
+    public String getTotal(Cart cart) {
+        cart.setCartStatus(CartStatus.COMPLETED);
+        return "Total is: " + cart.getTotal();
     }
 
     public Cart getOne(String uuid) {

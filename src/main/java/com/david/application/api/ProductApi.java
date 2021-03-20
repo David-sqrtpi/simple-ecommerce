@@ -32,9 +32,7 @@ public class ProductApi {
     }
 
     @PutMapping("modify/{uuid}") //TODO Make this stuff working
-    public String modify(@PathVariable String uuid, @RequestBody Product product) {
-        return "Product with uuid " +
-                uuid +
-                " has been modified";
+    public void modify(@PathVariable String uuid, @RequestBody Product product) {
+        productService.modify(product);
     }
 }

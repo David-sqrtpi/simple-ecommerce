@@ -2,17 +2,16 @@ package com.david.application.services;
 
 import com.david.application.entity.Cart;
 import com.david.application.entity.Item;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.david.application.entity.Product;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ItemService {
 
-    @Autowired
-    private ProductService productService;
-
-    public void addItem(Cart cart, String productUuid, int quantity) {
-        cart.addItem(new Item(productService.getOne(productUuid), quantity));
+    public void addItem(Cart cart, Product product, int quantity) {
+        Item item = new Item(product, quantity);
+        cart.setTotal(cart.getTotal() + item.getSubtotal());
+        cart.addItem(item);
     }
 
     public void removeItem(String uuid) {
