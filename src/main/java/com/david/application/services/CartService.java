@@ -2,34 +2,38 @@ package com.david.application.services;
 
 import com.david.application.entity.Cart;
 import com.david.application.entity.ItemDetail;
-import com.david.application.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 @Service
 public class CartService {
 
     @Autowired
-    private ProductService productService;
+    ProductService productService;
 
+    private final ArrayList<Cart> carts = new ArrayList<>();
 
-    public void addItem(String uuid, int quantity) {
+    public void createCard(Cart cart) {
+        carts.add(cart);
+    }
 
-        Cart cart = new Cart();
+    public Iterator<Cart> getAll() {
+        return carts.iterator();
+    }
 
-        Product product = productService.getByUuid(uuid);
+    public void addItem(String cartUuid, String productUuid, int quantity) {
+        ItemDetail itemDetail = new ItemDetail(productService.getByUuid(productUuid), quantity);
+        try {
+            Cart cart = getCartByUuid(cartUuid);
+            cart.addItem(itemDetail);
+            cart.setTotal(cart.getTotal() +itemDetail.getSubtotal());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        ItemDetail itemDetail = new ItemDetail();
-
-        itemDetail.setCartUuid(cart.getUuid());
-        itemDetail.setProduct(product);
-        itemDetail.setQuantity(quantity);
-
-        ArrayList<ItemDetail> items = new ArrayList<>();
-
-        items.add(itemDetail);
     }
 
     public String getTotal(String uuid) {
@@ -37,6 +41,35 @@ public class CartService {
     }
 
     public String removeItem(String uuid) {
-        return "Item with uuid : removed";
+        return "Item with uuid: removed";
+    }
+
+    private Cart getCartByUuid(String uuid) {
+        if(existsByUuid(uuid)){
+            for(Cart cart : carts) {
+                if(cart.getUuid().equals(uuid)) {
+                    return cart;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private boolean existsByUuid(String uuid) {
+        return carts.stream().anyMatch(cart -> cart.getUuid().equals(uuid));
+    }
+
+
+    public Cart getOne(String uuid) {
+        if(existsByUuid(uuid)){
+            for(Cart cart : carts) {
+                if(cart.getUuid().equals(uuid)) {
+                    return cart;
+                }
+            }
+        }
+
+        return null;
     }
 }

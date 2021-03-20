@@ -5,6 +5,8 @@ import com.david.application.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
+
 @RestController
 @RequestMapping("product")
 @CrossOrigin
@@ -13,54 +15,26 @@ public class ProductApi {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    UuidGenerator uuidGenerator;
 
-    @GetMapping("list-all")
-    public Iterable<Product> listAll() {
+    @GetMapping("get")
+    public Iterator<Product> listAll() {
         return productService.listAll();
     }
 
     @PostMapping("add")
     public String add(@RequestBody Product product) {
-
-        if(ExistsByUuid(product.getUuid())) {
-            return "This product exists, can't add it to the application";
-        }
-
-        productService.add(product);
-
-        return "Product added with uuid " +
-                product.getUuid() +
-                " and sku " +
-                product.getSku();
+        return productService.add(product);
     }
 
-    @DeleteMapping("delete-by-id/{uuid}")
+    @DeleteMapping("delete/{uuid}")
     public String deleteByUuid(@PathVariable String uuid) {
-
-        if(ExistsByUuid(uuid)) {
-            return "This product doesn't exists, can't delete it of the application";
-        }
-        productService.deleteById(uuid);
-        return "deleted product with uuid " + uuid;
+        return productService.deleteById(uuid);
     }
 
-    @PutMapping("modify-by-id/{uuid}")
+    @PutMapping("modify/{uuid}") //TODO Make this stuff working
     public String modify(@PathVariable String uuid, @RequestBody Product product) {
-
-        if(!ExistsByUuid(uuid)) {
-            return "This product doesn't exists, can't modify in application";
-        }
-
-        productService.modify(product);
-
         return "Product with uuid " +
                 uuid +
                 " has been modified";
-    }
-
-    private boolean ExistsByUuid(String uuid) {
-        return productService.existsByUuid(uuid);
     }
 }
