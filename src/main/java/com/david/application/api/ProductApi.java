@@ -5,7 +5,7 @@ import com.david.application.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("product")
@@ -17,18 +17,18 @@ public class ProductApi {
 
 
     @GetMapping("get")
-    public Iterator<Product> listAll() {
+    public Collection<Product> listAll() {
         return productService.listAll();
     }
 
     @PostMapping("add")
-    public String add(@RequestBody Product product) {
-        return productService.add(product);
+    public void add(@RequestBody Product product) {
+        productService.add(product);
     }
 
     @DeleteMapping("delete/{uuid}")
-    public String deleteByUuid(@PathVariable String uuid) {
-        return productService.deleteById(uuid);
+    public void deleteByUuid(@PathVariable String uuid) {
+        productService.deleteById(uuid);
     }
 
     @PutMapping("modify/{uuid}") //TODO Make this stuff working

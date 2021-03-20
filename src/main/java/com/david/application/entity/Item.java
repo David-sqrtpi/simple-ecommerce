@@ -9,14 +9,14 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemDetail {
+public class Item {
 
     private String uuid = UUID.randomUUID().toString();
     private Product product;
     private int quantity;
     private long subtotal;
 
-    public ItemDetail(Product product, int quantity) {
+    public Item(Product product, int quantity) {
         this.setQuantity(quantity);
         this.setProduct(product);
         this.subtotal = this.product.getPrice() * quantity;

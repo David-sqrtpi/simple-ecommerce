@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -15,14 +16,14 @@ public class Cart {
 
     private final String uuid = UUID.randomUUID().toString();
     private CartStatus cartStatus = CartStatus.PENDING;
-    private ArrayList<ItemDetail> items = new ArrayList<>();
+    private Map<String, Item> items = new HashMap<>();
     private long total;
 
-    public void addItem(ItemDetail itemDetail){
-        this.items.add(itemDetail);
+    public void addItem(Item item){
+        this.items.put(item.getUuid(), item);
     }
 
-    public void removeItem(ItemDetail itemDetail) {
-        this.items.remove(itemDetail);
+    public void removeItem(Item item) {
+        this.items.remove(item.getUuid());
     }
 }

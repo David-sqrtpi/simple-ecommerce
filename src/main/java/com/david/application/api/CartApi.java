@@ -1,13 +1,13 @@
 package com.david.application.api;
 
 import com.david.application.entity.Cart;
-import com.david.application.entity.ItemDetail;
 import com.david.application.entity.Product;
 import com.david.application.services.CartService;
+import com.david.application.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("cart")
@@ -17,6 +17,9 @@ public class CartApi {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private ItemService itemService;
+
     @PostMapping("create")
     public String create(Cart cart) {
         cartService.createCard(cart);
@@ -24,7 +27,7 @@ public class CartApi {
     }
 
     @GetMapping("get")
-    public Iterator<Cart> getAll() {
+    public Collection<Cart> getAll() {
         return cartService.getAll();
     }
 
@@ -34,11 +37,8 @@ public class CartApi {
     }
 
     @PostMapping("add/{cartUuid}")
-    public String add(@RequestParam String productUuid, @RequestParam int quantity, @PathVariable String cartUuid) {
-
-        cartService.addItem(cartUuid, productUuid, quantity);
-
-        return "Product added to cart";
+    public void addItem(@RequestParam String productUuid, @RequestParam int quantity, @PathVariable String cartUuid) {
+        itemService.addItem(cartService.getOne(cartUuid), productUuid, quantity);
     }
 
     public Product delete (Product product) {

@@ -1,30 +1,17 @@
 package com.david.application;
 
-import com.david.application.entity.Cart;
-import com.david.application.entity.ItemDetail;
 import com.david.application.entity.Product;
 import com.david.application.enums.ProductType;
-import com.david.application.services.CartService;
-import com.david.application.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SpringBootApplication
 public class SimpleEcommerceApplication {
-
-    @PostConstruct
-    public void createCart() {
-        Cart cart = new Cart();
-        cart.setItems(new ArrayList<>());
-    }
 
     @PostConstruct
     public void starterProducts() {
