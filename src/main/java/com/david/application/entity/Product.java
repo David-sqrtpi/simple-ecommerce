@@ -22,6 +22,6 @@ public class Product {
     private ProductType productType;
 
     @Id
-    private String uuid;
+    private final String uuid = UUID.randomUUID().toString();
 
 }

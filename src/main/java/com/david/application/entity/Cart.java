@@ -15,7 +15,7 @@ import java.util.*;
 public class Cart {
 
     @Id
-    private  String uuid;
+    private final String uuid = UUID.randomUUID().toString();
 
     @ManyToMany
     private final List<Product> products = new ArrayList<>();
