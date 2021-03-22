@@ -1,25 +1,29 @@
 package com.david.application.services;
 
 import com.david.application.entity.Product;
+import com.david.application.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class ProductService {
 
-    private final HashMap<String, Product> products = new HashMap<>();
+    @Autowired
+    private ProductRepository productRepository;
 
-    public Collection<Product> listAll(){
-        return products.values();
+    public List<Product> listAll(){
+        return productRepository.findAll();
     }
 
     public ResponseEntity<String> add(Product product) {
         if(!exists(product.getUuid())) {
-            products.put(product.getUuid(), product);
+            productRepository.save(product);
             return new ResponseEntity<>("Product has been created",
                     HttpStatus.CREATED);
         }
@@ -29,7 +33,7 @@ public class ProductService {
 
     public ResponseEntity<String> deleteById(String uuid) {
         if(exists(uuid)) {
-            products.remove(uuid);
+            productRepository.deleteById(uuid);
             return new ResponseEntity<>("Product has been eliminated",
                     HttpStatus.OK);
         }
@@ -39,18 +43,18 @@ public class ProductService {
 
     public void modify(String uuid, Product product){
         if(exists(uuid)) {
-            products.replace(uuid, product);
+            productRepository.save(product);
         }
     }
 
     public Product getOne(String uuid) {
         if(exists(uuid)) {
-            return products.get(uuid);
+            return productRepository.getOne(uuid);
         }
         return null;
     }
 
     private boolean exists(String uuid) {
-        return products.containsKey(uuid);
+        return productRepository.existsById(uuid);
     }
 }

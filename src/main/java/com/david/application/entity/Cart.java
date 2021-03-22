@@ -5,25 +5,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Cart {
 
-    private final String uuid = UUID.randomUUID().toString();
+    @Id
+    private  String uuid;
+
     private CartStatus cartStatus = CartStatus.PENDING;
-    private Map<String, Item> items = new HashMap<>();
+    @ManyToMany
+    private final List<Item> items = new ArrayList<>();
     private long total;
 
     public void addItem(Item item){
-        this.items.put(item.getUuid(), item);
+        this.items.add(item);
     }
 
     public void removeItem(Item item) {
-        this.items.remove(item.getUuid());
+        this.items.remove(item);
     }
 }

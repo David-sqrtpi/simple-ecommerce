@@ -1,25 +1,25 @@
 package com.david.application.services;
 
 import com.david.application.entity.Cart;
-import com.david.application.entity.Item;
 import com.david.application.enums.CartStatus;
+import com.david.application.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class CartService {
 
-    private final HashMap<String, Cart> carts = new HashMap<>();
+    @Autowired
+    private CartRepository cartRepository;
 
-    public void createCard(Cart cart) {
-        carts.put(cart.getUuid(), cart);
+    public void createCart(Cart cart) {
+        cartRepository.save(cart);
     }
 
-    public Collection<Cart> getAll() {
-        return carts.values();
+    public List<Cart> getAll() {
+        return cartRepository.findAll();
     }
 
     public void addItem(){
@@ -32,6 +32,6 @@ public class CartService {
     }
 
     public Cart getOne(String uuid) {
-        return carts.get(uuid);
+        return cartRepository.findById(uuid).get();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("product")
@@ -17,7 +18,7 @@ public class ProductApi {
     private ProductService productService;
 
     @GetMapping("get")
-    public Collection<Product> listAll() {
+    public List<Product> listAll() {
         return productService.listAll();
     }
 
