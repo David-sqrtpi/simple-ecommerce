@@ -15,4 +15,4 @@ For those methods who allows a request body it is a raw JSON
 | POST | cart/checkout/{uuid} | Make a checkout to the cart identified by the UUID `uuid` | Confirmation String 
 | POST | cart/create | Allows to create a new cart |
 
-The .jar artifact can be downloaded from https://github.com/David-sqrtpi/simple-ecommerce/blob/master/build/libs/simple-ecommerce-1.0.jar for making tests. **Just download it and enjoy!!! :-)**.
+The .jar artifact can be downloaded from https://github.com/David-sqrtpi/simple-ecommerce/blob/master/build/libs/simple-ecommerce-1.0.jar for making tests with java version 15. **Just download it and enjoy!!! :-)**.
