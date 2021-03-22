@@ -26,11 +26,7 @@ public class Cart {
         this.products.add(product);
     }
 
-    public void removeItem(Product product) {
-        this.products.remove(product);
-    }
-
-    public void findItem(String productUuid) {
-
+    public void removeProduct(String productUuid) {
+        this.products.removeIf(product -> product.getUuid().equals(productUuid));
     }
 }

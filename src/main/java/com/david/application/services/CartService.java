@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,17 +44,22 @@ public class CartService {
         for (int i = 0; i < item.getQuantity(); i++) {
             cart.addProduct(product);
         }
-        cart.setTotal(cart.getTotal() + item.getQuantity() * product.getPrice());
+        changeTotal(cart);
         cartRepository.save(cart);
         return new ResponseEntity<>("Success",
                 HttpStatus.OK);
     }
 
     public void removeItem(Item item) {
-
+        Cart cart = cartRepository.getOne(item.getCartUuid());
+        if (cart.getProducts() != null) {
+            cart.removeProduct(item.getProductUuid());
+            changeTotal(cart);
+            cartRepository.save(cart);
+        }
     }
 
-    public String getTotal(String cartUuid) {
+    public String check(String cartUuid) {
         Cart cart = cartRepository.getOne(cartUuid);
         if(isCompleted(cart)){
             return "This cart was checked already";
@@ -73,5 +79,12 @@ public class CartService {
 
     private boolean isCompleted(Cart cart){
         return cart.getCartStatus().equals(CartStatus.COMPLETED);
+    }
+
+    private void changeTotal(Cart cart) {
+        cart.setTotal(0);
+        for (Product product : cart.getProducts()) {
+            cart.setTotal(product.getPrice() + cart.getTotal());
+        }
     }
 }

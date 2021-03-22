@@ -40,11 +40,12 @@ public class CartApi {
     
     @PostMapping("checkout/{cartUuid}")
     public String getTotal(@PathVariable String cartUuid){
-        return cartService.getTotal(cartUuid);
+        return cartService.check(cartUuid);
     }
 
-    public Product delete (Product product) {
-        return product;
+    @DeleteMapping("delete-item")
+    public void deleteItem (@RequestBody Item item) {
+        cartService.removeItem(item);
     }
 
     public Product modify(Product product) {
