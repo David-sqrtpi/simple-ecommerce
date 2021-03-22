@@ -30,12 +30,12 @@ public class CartService {
         return cartRepository.findAll();
     }
 
-    public ResponseEntity<String> addItem(Item item) {
-        if (!exists(item.getCartUuid())) {
+    public ResponseEntity<String> addItem(String cartUuid, Item item) {
+        if (!exists(cartUuid)) {
             return new ResponseEntity<>("This car does not exists",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Cart cart = cartRepository.getOne(item.getCartUuid());
+        Cart cart = cartRepository.getOne(cartUuid);
         Product product = productService.getOne(item.getProductUuid());
         if (product == null) {
             return new ResponseEntity<>("This product does not exists",
@@ -50,8 +50,8 @@ public class CartService {
                 HttpStatus.OK);
     }
 
-    public void removeItem(Item item) {
-        Cart cart = cartRepository.getOne(item.getCartUuid());
+    public void removeItem(String cartUuid, Item item) {
+        Cart cart = cartRepository.getOne(cartUuid);
         if (cart.getProducts() != null) {
             cart.removeProduct(item.getProductUuid());
             changeTotal(cart);

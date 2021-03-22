@@ -38,9 +38,9 @@ public class CartApi {
         return cartConstructor.construct(uuid);
     }
 
-    @PostMapping("add-item")
-    public ResponseEntity<String> addItem(@RequestBody Item item) {
-        return cartService.addItem(item);
+    @PostMapping("add-item/{cartUuid}")
+    public ResponseEntity<String> addItem(@RequestBody Item item, @PathVariable String cartUuid) {
+        return cartService.addItem(cartUuid, item);
     }
     
     @PostMapping("checkout/{cartUuid}")
@@ -48,9 +48,9 @@ public class CartApi {
         return cartService.check(cartUuid);
     }
 
-    @DeleteMapping("delete-item")
-    public void deleteItem (@RequestBody Item item) {
-        cartService.removeItem(item);
+    @DeleteMapping("delete-item/{cartUuid}")
+    public void deleteItem (@RequestBody Item item, @PathVariable String cartUuid) {
+        cartService.removeItem(cartUuid, item);
     }
 
     public Product modify(Product product) {
