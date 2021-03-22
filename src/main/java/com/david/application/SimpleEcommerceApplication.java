@@ -1,7 +1,6 @@
 package com.david.application;
 
 import com.david.application.entity.Cart;
-import com.david.application.entity.Item;
 import com.david.application.entity.Product;
 import com.david.application.enums.CartStatus;
 import com.david.application.enums.ProductType;
@@ -12,10 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

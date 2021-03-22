@@ -5,6 +5,7 @@ import com.david.application.entity.Item;
 import com.david.application.entity.Product;
 import com.david.application.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,14 +33,14 @@ public class CartApi {
         return cartService.getOne(uuid);
     }
 
-    @PostMapping("add")
-    public void addItem(@RequestBody Item item) {
-        itemService.addItem(item);
+    @PostMapping("add-item")
+    public ResponseEntity<String> addItem(@RequestBody Item item) {
+        return cartService.addItem(item);
     }
     
     @PostMapping("checkout/{cartUuid}")
     public String getTotal(@PathVariable String cartUuid){
-        return cartService.getTotal(cartService.getOne(cartUuid));
+        return cartService.getTotal(cartUuid);
     }
 
     public Product delete (Product product) {

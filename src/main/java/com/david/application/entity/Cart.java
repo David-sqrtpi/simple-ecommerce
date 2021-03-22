@@ -19,14 +19,18 @@ public class Cart {
 
     private CartStatus cartStatus = CartStatus.PENDING;
     @ManyToMany
-    private final List<Item> items = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
     private long total;
 
-    public void addItem(Item item){
-        this.items.add(item);
+    public void addProduct(Product product){
+        this.products.add(product);
     }
 
-    public void removeItem(Item item) {
-        this.items.remove(item);
+    public void removeItem(Product product) {
+        this.products.remove(product);
+    }
+
+    public void findItem(String productUuid) {
+
     }
 }
