@@ -17,9 +17,10 @@ public class Cart {
     @Id
     private  String uuid;
 
-    private CartStatus cartStatus = CartStatus.PENDING;
     @ManyToMany
     private final List<Product> products = new ArrayList<>();
+
+    private CartStatus cartStatus = CartStatus.PENDING;
     private long total;
 
     public void addProduct(Product product){

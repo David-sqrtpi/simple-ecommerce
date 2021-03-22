@@ -23,16 +23,6 @@ public class CartApi {
     @Autowired
     CartConstructor cartConstructor;
 
-    @PostMapping("create")
-    public void create(Cart cart) {
-        cartService.createCart(cart);
-    }
-
-    @GetMapping("get") //TODO If there aren't any cart throw an exception
-    public List<Cart> getAll() {
-        return cartService.getAll();
-    }
-
     @GetMapping("get/{uuid}")
     public CartDTO getOne(@PathVariable String uuid){
         return cartConstructor.construct(uuid);
@@ -42,18 +32,20 @@ public class CartApi {
     public ResponseEntity<String> addItem(@RequestBody Item item, @PathVariable String cartUuid) {
         return cartService.addItem(cartUuid, item);
     }
-    
-    @PostMapping("checkout/{cartUuid}")
-    public String getTotal(@PathVariable String cartUuid){
-        return cartService.check(cartUuid);
-    }
 
     @DeleteMapping("delete-item/{cartUuid}")
     public void deleteItem (@RequestBody Item item, @PathVariable String cartUuid) {
         cartService.removeItem(cartUuid, item);
     }
 
-    public Product modify(Product product) {
-        return product;
+    @PostMapping("checkout/{cartUuid}")
+    public String getTotal(@PathVariable String cartUuid){
+        return cartService.check(cartUuid);
     }
+
+    @PostMapping("create")
+    public void create(Cart cart) {
+        cartService.createCart(cart);
+    }
+
 }

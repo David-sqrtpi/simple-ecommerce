@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/*
+This class is used to construct the cartDTO, it allows to show a more human-readable JSON
+*/
 @Service
 public class CartConstructor {
     @Autowired

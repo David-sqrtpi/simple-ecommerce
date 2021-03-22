@@ -24,6 +24,4 @@ public class Product {
     @Id
     private String uuid;
 
-    //TODO don't forget about discount products
-
 }

@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -24,6 +22,7 @@ public class ProductService {
     public ResponseEntity<String> add(Product product) {
         if(!exists(product.getUuid())) {
             productRepository.save(product);
+
             return new ResponseEntity<>("Product has been created",
                     HttpStatus.CREATED);
         }
@@ -34,6 +33,7 @@ public class ProductService {
     public ResponseEntity<String> deleteById(String uuid) {
         if(exists(uuid)) {
             productRepository.deleteById(uuid);
+
             return new ResponseEntity<>("Product has been eliminated",
                     HttpStatus.OK);
         }
