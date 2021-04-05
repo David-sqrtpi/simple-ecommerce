@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,30 +24,21 @@ public class CartService {
     @Autowired
     private ProductService productService;
 
-    public void createCart(Cart cart) {
-        cartRepository.save(cart);
+    @Autowired
+    private ItemService itemService;
+
+    public Cart createCart(Cart cart) {
+        return cartRepository.save(cart);
     }
 
-    public ResponseEntity<String> addItem(String cartUuid, Item item) {
-        if (!exists(cartUuid)) {
-            return new ResponseEntity<>("This car does not exists",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<String> addItem(String cartUuid, String productSku, int quantity) {
+
         Cart cart = cartRepository.getOne(cartUuid);
-        if(isCartChecked(cart)){
-            return new ResponseEntity<>("This cart was checked already",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        Product product = productService.getOne(item.getProductUuid());
-        if (product == null) {
-            return new ResponseEntity<>("This product does not exists",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        for (int i = 0; i < item.getQuantity(); i++) {
-            cart.addProduct(product);
-        }
-        changeTotal(cart);
+
+        cart.addItem(itemService.buidItem(productSku, quantity));
+
         cartRepository.save(cart);
+
         return new ResponseEntity<>("Success",
                 HttpStatus.OK);
     }
@@ -53,11 +46,7 @@ public class CartService {
     public void removeItem(String cartUuid, Item item) {
         Cart cart = cartRepository.getOne(cartUuid);
         if(!isCartChecked(cart)){
-            if (cart.getProducts() != null) {
-                cart.removeProduct(item.getProductUuid());
-                changeTotal(cart);
-                cartRepository.save(cart);
-            }
+
         }
     }
 
@@ -83,13 +72,4 @@ public class CartService {
         return cart.getCartStatus().equals(CartStatus.COMPLETED);
     }
 
-    private void changeTotal(Cart cart) {
-        cart.setTotal(0);
-        for (Product product : cart.getProducts()) {
-            if(product.getProductType().equals(ProductType.DISCOUNT)){
-                cart.setTotal((product.getPrice()/2) + cart.getTotal());
-            }
-            cart.setTotal(product.getPrice() + cart.getTotal());
-        }
-    }
 }

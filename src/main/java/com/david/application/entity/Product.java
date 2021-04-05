@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.UUID;
@@ -15,13 +16,13 @@ import java.util.UUID;
 @Entity
 public class Product {
 
-    private String name;
-    private long sku;
-    private String description;
-    private long price;
-    private ProductType productType;
-
     @Id
     private final String uuid = UUID.randomUUID().toString();
+
+    @Column(unique = true, nullable = false)
+    private String sku;
+
+    private String name;
+    private long price;
 
 }

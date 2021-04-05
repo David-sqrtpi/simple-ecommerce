@@ -17,17 +17,18 @@ public class Cart {
     @Id
     private final String uuid = UUID.randomUUID().toString();
 
-    @ManyToMany
-    private final List<Product> products = new ArrayList<>();
+    @OneToMany
+    private List<Item> items;
 
     private CartStatus cartStatus = CartStatus.PENDING;
     private long total;
 
-    public void addProduct(Product product){
-        this.products.add(product);
+    public void addItem(Item item){
+        this.items.add(item);
     }
 
-    public void removeProduct(String productUuid) {
-        this.products.removeIf(product -> product.getUuid().equals(productUuid));
+    public void removeItem(Item item){
+        this.items.remove(item);
     }
+
 }

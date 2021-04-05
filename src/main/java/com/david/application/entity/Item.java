@@ -4,14 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Item {
-    private final String uuid = UUID.randomUUID().toString();
-    private int quantity;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @ManyToOne
     private Product product;
-    private String productUuid;
+
+    private int quantity;
+    private long subtotal;
+
+    public Item(Product product, int quantity){
+        this.setSubtotal(product.getPrice()*quantity);
+        this.setProduct(product);
+        this.setQuantity(quantity);
+    }
 }
