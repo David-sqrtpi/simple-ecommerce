@@ -11,22 +11,27 @@ import org.springframework.stereotype.Service;
 public class ItemService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Autowired
     private ItemRepository itemRepository;
 
     public Item buidItem(String sku, int quantity){
 
-        Item item = new Item(findProduct(sku), quantity); //TODO Using non-optional return method
+        Item item = new Item(productService.getOne(sku), quantity); //TODO Using non-optional return method
 
         save(item);
 
         return item;
     }
 
-    private Product findProduct(String sku){
-        return productRepository.findBySku(sku);
+    public Item changeItem(String product, int quantity) {
+        Product product1 = productService.getOne(product);
+        Item item = itemRepository.findByProduct(product1);
+        item.setQuantity(item.getQuantity()+quantity);
+        item.setSubtotal(item.getSubtotal()+ product1.getPrice()*quantity);
+        save(item);
+        return item;
     }
 
     private void save(Item item){

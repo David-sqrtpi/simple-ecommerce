@@ -35,11 +35,12 @@ public class CartService {
 
         Cart cart = cartRepository.findById(cartUuid).get();
 
-        System.out.println(hasProduct(cart, product));
-
-        cart.addItem(itemService.buidItem(product, quantity));
-
-        cartRepository.save(cart);
+        if (hasProduct(cart, product)) {
+            cart.addItem(itemService.changeItem(product, quantity));
+        } else {
+            cart.addItem(itemService.buidItem(product, quantity));
+            cartRepository.save(cart);
+        }
 
         throw new ResponseStatusException(HttpStatus.CREATED, "Item has been added");
     }
@@ -75,10 +76,15 @@ public class CartService {
 
     private boolean hasProduct(Cart cart, String product) {
 
-        if (cart.getItems().stream().anyMatch(item -> item.getProduct().getSku().equals(product))){
-            return true; //exists
+        if (cart.getItems()
+                .stream()
+                .anyMatch(item ->
+                        item.getProduct().getSku().equals(product)
+                )
+        ){
+            return true;
         }
-        return false; //it is new
+        return false;
     }
 
 }

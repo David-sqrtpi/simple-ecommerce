@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,26 +20,27 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public ResponseEntity<String> add(Product product) {
-        if(!exists(product.getUuid())) {
+    public void add(Product product) {
+        if(!exists(product.getSku())) {
             productRepository.save(product);
 
-            return new ResponseEntity<>("Product has been created",
-                    HttpStatus.CREATED);
+            throw new ResponseStatusException(HttpStatus.CREATED,
+                    "Product has been created");
         }
-        return new ResponseEntity<>("Product with uuid "+product.getUuid()+" already exists",
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Product with sku"+product.getUuid()+" already exists");
     }
 
-    public ResponseEntity<String> deleteById(String uuid) {
-        if(exists(uuid)) {
-            productRepository.deleteById(uuid);
+    public void deleteById(String product) {
+        if(exists(product)) {
+            productRepository.deleteBySku(product);
 
-            return new ResponseEntity<>("Product has been eliminated",
-                    HttpStatus.OK);
+            throw new ResponseStatusException(HttpStatus.OK,
+                    "Product has been eliminated");
         }
-        return new ResponseEntity<>("Product with uuid "+uuid+" does not exists",
-                HttpStatus.INTERNAL_SERVER_ERROR);
+
+        throw new ResponseStatusException(HttpStatus.OK,
+                "Product with sku "+product+" does not exists");
     }
 
     public void modify(String uuid, Product product){
@@ -47,14 +49,11 @@ public class ProductService {
         }
     }
 
-    public Product getOne(String uuid) {
-        if(exists(uuid)) {
-            return productRepository.getOne(uuid);
-        }
-        return null;
+    public Product getOne(String product) {
+        return productRepository.findBySku(product);
     }
 
     private boolean exists(String uuid) {
-        return productRepository.existsById(uuid);
+        return productRepository.existsBySku(uuid);
     }
 }

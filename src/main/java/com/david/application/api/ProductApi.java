@@ -17,22 +17,27 @@ public class ProductApi {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("get")
+    @GetMapping
     public List<Product> listAll() {
         return productService.listAll();
     }
 
-    @PostMapping("add")
-    public ResponseEntity<String> add(@RequestBody Product product) {
-        return productService.add(product);
+    @GetMapping("/{product}")
+    public Product get(@PathVariable String product) {
+        return productService.getOne(product);
     }
 
-    @DeleteMapping("delete/{uuid}")
-    public ResponseEntity<String> deleteByUuid(@PathVariable String uuid) {
-        return productService.deleteById(uuid);
+    @PostMapping
+    public void add(@RequestBody Product product) {
+        productService.add(product);
     }
 
-    @PutMapping("modify/{uuid}")
+    @DeleteMapping("/{product}")
+    public void deleteByUuid(@PathVariable String product) {
+        productService.deleteById(product);
+    }
+
+    @PutMapping("/{product}")
     public void modify(@PathVariable String uuid, @RequestBody Product product) {
         productService.modify(uuid, product);
     }

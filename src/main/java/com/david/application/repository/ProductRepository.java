@@ -7,4 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
     Product findBySku(String productSku);
+
+    boolean existsBySku(String uuid);
+
+    void deleteBySku(String product);
+
 }
