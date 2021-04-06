@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("cart")
 @CrossOrigin
@@ -16,31 +18,36 @@ public class CartApi {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/{uuid}")
-    public Cart get(@PathVariable String uuid){
-        return cartService.getOne(uuid);
+    @GetMapping
+    public List<Cart> findAll() {
+        return cartService.findAll();
     }
 
-    @PostMapping("add-item")
-    public ResponseEntity<String> addItem(@RequestParam String product,
-                                          @RequestParam String cart,
-                                          @RequestParam int quantity) {
-        return cartService.addItem(cart, product, quantity);
+    @GetMapping("/{cart}")
+    public Cart get(@PathVariable String cart){
+        return cartService.getOne(cart);
     }
 
-    @DeleteMapping("delete-item/{cartUuid}")
-    public void deleteItem (@RequestBody Item item, @PathVariable String cartUuid) {
-        cartService.removeItem(cartUuid, item);
+    @PostMapping
+    public Cart create() {
+        return cartService.createCart(new Cart());
     }
 
-    @PostMapping("checkout/{cartUuid}")
-    public String getTotal(@PathVariable String cartUuid){
-        return cartService.check(cartUuid);
+    @PostMapping("/{cart}")
+    public void addItem(@RequestParam String product,
+                                          @RequestParam int quantity,
+                                          @PathVariable String cart) {
+        cartService.addItem(cart, product, quantity);
     }
 
-    @PostMapping("create")
-    public Cart create(Cart cart) {
-        return cartService.createCart(cart);
+    @PostMapping("/{cart}/checkout")
+    public String checkOut(@PathVariable String cart){
+        return cartService.check(cart);
+    }
+
+    @DeleteMapping("/{cart}")
+    public void deleteItem (@RequestParam String product, @PathVariable String cart) {
+        cartService.removeItem(cart, product);
     }
 
 }
