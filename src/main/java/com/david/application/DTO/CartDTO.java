@@ -16,8 +16,8 @@ import java.util.List;
 public class CartDTO implements Serializable {
 
     private String uuid;
-    private CartStatus cartStatus;
-    private List<Item> items = new ArrayList<>();
+    private String cartStatus;
+    private List<String> items = new ArrayList<>();
     private long total;
 
 }

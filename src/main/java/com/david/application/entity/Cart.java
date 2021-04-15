@@ -18,7 +18,7 @@ public class Cart {
     private final String uuid = UUID.randomUUID().toString();
 
     @OneToMany
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
 
     private CartStatus cartStatus = CartStatus.PENDING;
     private long total;
