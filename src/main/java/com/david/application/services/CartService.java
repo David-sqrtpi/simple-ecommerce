@@ -63,7 +63,7 @@ public class CartService {
     }
 
     public Cart getOne(String uuid) {
-        return cartRepository.findById(uuid).get();
+        return cartRepository.findByUuid(uuid);
     }
 
     private boolean exists(String uuid){

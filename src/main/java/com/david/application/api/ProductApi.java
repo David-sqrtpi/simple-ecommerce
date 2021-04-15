@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("products")
 @CrossOrigin
 public class ProductApi {
 
@@ -22,9 +22,9 @@ public class ProductApi {
         return productService.listAll();
     }
 
-    @GetMapping("/{product}")
-    public Product get(@PathVariable String product) {
-        return productService.getOne(product);
+    @GetMapping("/{sku}")
+    public Product get(@PathVariable String sku) {
+        return productService.getOne(sku);
     }
 
     @PostMapping
@@ -32,13 +32,14 @@ public class ProductApi {
         productService.add(product);
     }
 
-    @DeleteMapping("/{product}")
-    public void deleteByUuid(@PathVariable String product) {
-        productService.deleteById(product);
+    @DeleteMapping("/{sku}")
+    public void deleteBySku(@PathVariable String sku) {
+        productService.deleteBySku(sku);
     }
 
-    @PutMapping("/{product}")
-    public void modify(@PathVariable String uuid, @RequestBody Product product) {
-        productService.modify(uuid, product);
+    @PutMapping("/{sku}")
+    public void modify(@PathVariable String sku,
+                       @RequestBody Product product) {
+        productService.modify(sku, product);
     }
 }

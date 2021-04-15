@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, String> {
-    Item findByProduct(Product product);
+    Item findByProductSku(String sku);
 }

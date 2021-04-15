@@ -3,7 +3,6 @@ package com.david.application.services;
 import com.david.application.entity.Item;
 import com.david.application.entity.Product;
 import com.david.application.repository.ItemRepository;
-import com.david.application.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class ItemService {
 
     public Item buidItem(String sku, int quantity){
 
-        Item item = new Item(productService.getOne(sku), quantity); //TODO Using non-optional return method
+        Item item = new Item(productService.getOne(sku), quantity);
 
         save(item);
 
@@ -27,9 +26,9 @@ public class ItemService {
 
     public Item changeItem(String product, int quantity) {
         Product product1 = productService.getOne(product);
-        Item item = itemRepository.findByProduct(product1);
-        item.setQuantity(item.getQuantity()+quantity);
-        item.setSubtotal(item.getSubtotal()+ product1.getPrice()*quantity);
+        Item item = itemRepository.findByProductSku(product);
+        item.setQuantity(item.getQuantity() + quantity);
+        item.setSubtotal(item.getSubtotal() + product1.getPrice() * quantity);
         save(item);
         return item;
     }
