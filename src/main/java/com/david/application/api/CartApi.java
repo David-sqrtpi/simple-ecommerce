@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("cart")
+@RequestMapping("carts")
 @CrossOrigin
 public class CartApi {
 
@@ -24,20 +24,20 @@ public class CartApi {
     }
 
     @GetMapping("/{cart}")
-    public Cart get(@PathVariable String cart){
+    public Cart getOne(@PathVariable String cart){
         return cartService.getOne(cart);
     }
 
     @PostMapping
     public Cart create() {
-        return cartService.createCart(new Cart());
+        return cartService.createCart();
     }
 
     @PostMapping("/{cart}")
-    public void addItem(@RequestParam String product,
-                                          @RequestParam int quantity,
-                                          @PathVariable String cart) {
-        cartService.addItem(cart, product, quantity);
+    public void addItem(@PathVariable String cart,
+                        @RequestParam String productSku,
+                        @RequestParam int productQuantity) {
+        cartService.addItem(cart, productSku, productQuantity);
     }
 
     @PostMapping("/{cart}/checkout")

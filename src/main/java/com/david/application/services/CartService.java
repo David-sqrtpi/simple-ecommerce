@@ -23,22 +23,34 @@ public class CartService {
         return cartRepository.findAll();
     }
 
-    public Cart createCart(Cart cart) {
-        return cartRepository.save(cart);
+    public Cart getOne(String uuid) {
+        return cartRepository.findByUuid(uuid);//TODO determine why using getOne() throws an exception
     }
 
-    public void addItem(String cartUuid, String product, int quantity) {
+    public Cart createCart() {
+        return cartRepository.save(new Cart());
+    }
+
+    public void addItem(String cartUuid, String productSku, int productQuantity) {
 
         if (!cartRepository.existsById(cartUuid)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "This car does not exists");
         }
 
-        Cart cart = cartRepository.findById(cartUuid).get();
+        Cart cart = cartRepository.getOne(cartUuid);
 
-        if (hasProduct(cart, product)) {
-            cart.addItem(itemService.changeItem(product, quantity));
+        if (hasProduct(cart, productSku)) {
+            cart.addItem(itemService.changeItem(productSku, productQuantity));
+            //cartRepository.save(cart);
+            /*TODO change from add item to cart to assign cart to item
+             *  because JPA generates a intermediate table called cart_items*/
+
+            /*TODO search about database normalization to define if using a intermediate
+            *  table for one-to-many relationships is either correct or recommended*/
+
         } else {
-            cart.addItem(itemService.buidItem(product, quantity));
+            cart.addItem(itemService.buidItem(productSku, productQuantity));
             cartRepository.save(cart);
         }
 
@@ -62,29 +74,17 @@ public class CartService {
         return "Total is: " + cart.getTotal();
     }
 
-    public Cart getOne(String uuid) {
-        return cartRepository.findByUuid(uuid);
-    }
-
-    private boolean exists(String uuid){
-        return cartRepository.existsById(uuid);
-    }
-
     private boolean isCartChecked(Cart cart){
         return cart.getCartStatus().equals(CartStatus.COMPLETED);
     }
 
     private boolean hasProduct(Cart cart, String product) {
 
-        if (cart.getItems()
+        return cart.getItems()
                 .stream()
                 .anyMatch(item ->
                         item.getProduct().getSku().equals(product)
-                )
-        ){
-            return true;
-        }
-        return false;
+                );
     }
 
 }
