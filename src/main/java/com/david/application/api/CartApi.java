@@ -1,6 +1,7 @@
 package com.david.application.api;
 
 import com.david.application.DTO.CartDTO;
+import com.david.application.DTOConverter.CartConverter;
 import com.david.application.entity.Cart;
 import com.david.application.entity.Item;
 import com.david.application.services.CartService;
@@ -18,19 +19,22 @@ public class CartApi {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private CartConverter cartConverter;
+
     @GetMapping
-    public List<Cart> findAll() {
-        return cartService.findAll();
+    public List<CartDTO> findAll() {
+        return cartConverter.fromEntity(cartService.findAll());
     }
 
     @GetMapping("/{cart}")
-    public Cart getOne(@PathVariable String cart){
-        return cartService.getOne(cart);
+    public CartDTO getOne(@PathVariable String cart){
+        return cartConverter.fromEntity(cartService.getOne(cart));
     }
 
     @PostMapping
-    public Cart create() {
-        return cartService.createCart();
+    public CartDTO create() {
+        return cartConverter.fromEntity(cartService.createCart());
     }
 
     @PostMapping("/{cart}")

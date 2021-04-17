@@ -19,6 +19,7 @@ public class CartConverter implements DTOConverter<Cart, CartDTO> {
         cart.setCartStatus(CartStatus.valueOf(DTO.getCartStatus()));
         cart.setTotal(DTO.getTotal());
         cart.setItems(itemConverter.fromDTO(DTO.getItemDTOS()));
+        cart.setUuid(DTO.getUuid());
 
         return cart;
     }
@@ -29,6 +30,7 @@ public class CartConverter implements DTOConverter<Cart, CartDTO> {
         cartDTO.setCartStatus(entity.getCartStatus().name());
         cartDTO.setTotal(entity.getTotal());
         cartDTO.setItemDTOS(itemConverter.fromEntity(entity.getItems()));
+        cartDTO.setUuid(entity.getUuid());
 
         return cartDTO;
     }
