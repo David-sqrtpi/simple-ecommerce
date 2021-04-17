@@ -50,10 +50,9 @@ public class ProductService {
     public void modify(String sku, Product product){
         if(productRepository.existsBySku(sku)) {
 
-            Product newProduct = productRepository.getOneBySku(sku);
-            newProduct.setPrice(product.getPrice());
-            newProduct.setName(product.getName());
-            productRepository.save(newProduct);
+            Product oldProduct = productRepository.getOneBySku(sku);
+            product.setSku(oldProduct.getSku());
+            productRepository.save(product);
             
             throw new ResponseStatusException(HttpStatus.OK,
                     "Product has been modified");
@@ -63,4 +62,3 @@ public class ProductService {
                 "Product with sku "+sku+" does not exists");
     }
 }
-//TODO think about final field UUID (if it's neccesary or not)

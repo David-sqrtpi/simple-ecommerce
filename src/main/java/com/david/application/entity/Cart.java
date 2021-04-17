@@ -15,20 +15,11 @@ import java.util.*;
 public class Cart {
 
     @Id
-    private final String uuid = UUID.randomUUID().toString();
+    private String uuid = UUID.randomUUID().toString();
 
     @OneToMany
     private List<Item> items = new ArrayList<>();
 
     private CartStatus cartStatus = CartStatus.PENDING;
     private long total;
-
-    public void addItem(Item item){
-        this.items.add(item);
-    }
-
-    public void removeItem(Item item){
-        this.items.remove(item);
-    }
-
 }

@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    private final String uuid = UUID.randomUUID().toString();
+    private String uuid = UUID.randomUUID().toString();
 
     @Column(unique = true, nullable = false)
     private String sku;
