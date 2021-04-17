@@ -41,16 +41,10 @@ public class CartService {
         Cart cart = cartRepository.getOne(cartUuid);
 
         if (hasProduct(cart, productSku)) {
-            cart.getItems().add(itemService.changeItem(productSku, productQuantity));
-            cartRepository.save(cart);//TODO Placeholder
-            /*TODO change from add item to cart to assign cart to item
-             *  because JPA generates a intermediate table called cart_items*/
-
-            /*TODO search about database normalization to define if using a intermediate
-            *  table for one-to-many relationships is either correct or recommended*/
-
+            cart.addItem(itemService.changeItem(productSku, productQuantity));
+            cartRepository.save(cart);
         } else {
-            cart.getItems().add(itemService.buildItem(productSku, productQuantity));
+            cart.addItem(itemService.buildItem(productSku, productQuantity));
             cartRepository.save(cart);
         }
 

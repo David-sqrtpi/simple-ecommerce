@@ -16,18 +16,14 @@ public class ItemService {
 
     public Item buildItem(String sku, int quantity){
 
-        Item item = new Item(productService.getOne(sku), quantity);
-
-        //itemRepository.save(item);
-
-        return item;
+        return new Item(productService.getOne(sku), quantity);
     }
 
     public Item changeItem(String product, int quantity) {
+
         Item item = itemRepository.findByProductSku(product);
         item.setSubtotal(item.getSubtotal() + (item.getSubtotal()/item.getQuantity()) * quantity);
         item.setQuantity(item.getQuantity() + quantity);
-        //itemRepository.save(item);
 
         return item;
     }
