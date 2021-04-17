@@ -17,9 +17,19 @@ public class Cart {
     @Id
     private String uuid = UUID.randomUUID().toString();
 
-    @OneToMany
+    @OneToMany(mappedBy="cart", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
 
     private CartStatus cartStatus = CartStatus.PENDING;
     private long total;
+
+    public void addItem(Item item) {
+        items.add(item);
+        item.setCart(this);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+        item.setCart(null);
+    }
 }

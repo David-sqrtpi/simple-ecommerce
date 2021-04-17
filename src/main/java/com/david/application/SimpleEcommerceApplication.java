@@ -1,9 +1,11 @@
 package com.david.application;
 
 import com.david.application.entity.Cart;
+import com.david.application.entity.Item;
 import com.david.application.entity.Product;
 import com.david.application.enums.CartStatus;
 import com.david.application.repository.CartRepository;
+import com.david.application.repository.ItemRepository;
 import com.david.application.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +23,9 @@ public class SimpleEcommerceApplication {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(SimpleEcommerceApplication.class, args);
     }
@@ -29,7 +34,13 @@ public class SimpleEcommerceApplication {
     public void init(){
         Product product = new Product("UUID", "1", "Producto 1", 1000);
         productRepository.save(product);
+
+        Item item = new Item();
+        item.setProduct(product);
+
         Cart cart = new Cart("UUID", new ArrayList<>(), CartStatus.PENDING, 0);
+
+        cart.addItem(item);
         cartRepository.save(cart);
     }
 }
