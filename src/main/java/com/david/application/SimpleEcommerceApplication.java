@@ -23,9 +23,6 @@ public class SimpleEcommerceApplication {
     @Autowired
     private CartRepository cartRepository;
 
-    @Autowired
-    private ItemRepository itemRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(SimpleEcommerceApplication.class, args);
     }
@@ -35,11 +32,9 @@ public class SimpleEcommerceApplication {
         Product product = new Product("UUID", "1", "Producto 1", 1000);
         productRepository.save(product);
 
-        Item item = new Item();
-        item.setProduct(product);
+        Item item = new Item(product, 1);
 
         Cart cart = new Cart("UUID", new ArrayList<>(), CartStatus.PENDING, 0);
-
         cart.addItem(item);
         cartRepository.save(cart);
     }

@@ -51,7 +51,7 @@ public class ProductService {
         if(productRepository.existsBySku(sku)) {
 
             Product oldProduct = productRepository.getOneBySku(sku);
-            product.setSku(oldProduct.getSku());
+            product.setUuid(oldProduct.getUuid());
             productRepository.save(product);
             
             throw new ResponseStatusException(HttpStatus.OK,
