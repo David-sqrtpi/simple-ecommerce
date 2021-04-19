@@ -41,13 +41,13 @@ public class CartService {
 
         Cart cart = getOne(cartUuid);
 
-        if (hasProduct(cart, productSku)) {
-            cart.addItem(itemService.changeItem(productSku, productQuantity));
+        if (hasProduct(cartUuid, productSku)) {
+            itemService.changeItem(productSku, productQuantity, cart);
         } else {
-            cart.addItem(itemService.buildItem(productSku, productQuantity));
+            itemService.buildItem(productSku, productQuantity, cart);
         }
 
-        changeTotal(cart);
+        changeTotal(cartUuid);
         cartRepository.save(cart);
 
         throw new ResponseStatusException(HttpStatus.CREATED, "Item has been added");
@@ -74,20 +74,19 @@ public class CartService {
         return cart.getCartStatus().equals(CartStatus.COMPLETED);
     }
 
-    private boolean hasProduct(Cart cart, String product) {
+    private boolean hasProduct(String cart, String product) {
 
-        return cart.getItems()
-                .stream()
-                .anyMatch(item ->
-                        item.getProduct().getSku().equals(product)
-                );
+        List<Item> items = itemService.findByCartUuid(cart);
+        return items.stream().anyMatch(item -> item.getProduct().getSku().equals(product));
     }
 
-    private void changeTotal(Cart cart) {
+    private void changeTotal(String cart) {
         long total = 0;
 
-        System.out.println(cart.getItems().size());
-        for (Item item : cart.getItems()){
+        List<Item> items = itemService.findByCartUuid(cart);
+
+        System.out.println(items.size());
+        for (Item item : items){
             total += item.getSubtotal();
             System.out.println("Item id: " + item.getId() + "\n");
             System.out.println("Item name: " + item.getProduct().getName() + "\n");
@@ -95,7 +94,8 @@ public class CartService {
             System.out.println("Cart total: " + total + "\n");
         }
 
-        cart.setTotal(total);
+        Cart cart1 = getOne(cart);
+        cart1.setTotal(total);
     }
 
 }
