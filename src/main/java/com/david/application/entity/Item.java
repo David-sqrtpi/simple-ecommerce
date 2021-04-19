@@ -23,10 +23,4 @@ public class Item {
 
     private int quantity;
     private long subtotal;
-
-    public Item(Product product, int quantity){
-        this.setSubtotal(product.getPrice()*quantity);
-        this.setProduct(product);
-        this.setQuantity(quantity);
-    }
 }

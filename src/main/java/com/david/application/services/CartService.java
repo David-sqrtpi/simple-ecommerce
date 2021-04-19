@@ -1,6 +1,7 @@
 package com.david.application.services;
 
 import com.david.application.entity.Cart;
+import com.david.application.entity.Item;
 import com.david.application.enums.CartStatus;
 import com.david.application.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,16 @@ public class CartService {
                     "This car does not exists");
         }
 
-        Cart cart = cartRepository.getOne(cartUuid);
+        Cart cart = getOne(cartUuid);
 
         if (hasProduct(cart, productSku)) {
             cart.addItem(itemService.changeItem(productSku, productQuantity));
-            cartRepository.save(cart);
         } else {
             cart.addItem(itemService.buildItem(productSku, productQuantity));
-            cartRepository.save(cart);
         }
+
+        changeTotal(cart);
+        cartRepository.save(cart);
 
         throw new ResponseStatusException(HttpStatus.CREATED, "Item has been added");
     }
@@ -79,6 +81,21 @@ public class CartService {
                 .anyMatch(item ->
                         item.getProduct().getSku().equals(product)
                 );
+    }
+
+    private void changeTotal(Cart cart) {
+        long total = 0;
+
+        System.out.println(cart.getItems().size());
+        for (Item item : cart.getItems()){
+            total += item.getSubtotal();
+            System.out.println("Item id: " + item.getId() + "\n");
+            System.out.println("Item name: " + item.getProduct().getName() + "\n");
+            System.out.println("Item subtotal: " + item.getSubtotal() + "\n");
+            System.out.println("Cart total: " + total + "\n");
+        }
+
+        cart.setTotal(total);
     }
 
 }

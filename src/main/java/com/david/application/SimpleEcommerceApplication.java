@@ -32,10 +32,8 @@ public class SimpleEcommerceApplication {
         Product product = new Product("UUID", "1", "Producto 1", 1000);
         productRepository.save(product);
 
-        Item item = new Item(product, 1);
-
         Cart cart = new Cart("UUID", new ArrayList<>(), CartStatus.PENDING, 0);
-        cart.addItem(item);
+
         cartRepository.save(cart);
     }
 }
