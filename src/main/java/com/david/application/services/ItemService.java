@@ -29,11 +29,10 @@ public class ItemService {
 
     public Item changeItem(String product, int quantity, Cart cart) {
         Product product1 = productService.getOne(product);
-        long addToSubtotal = product1.getPrice() * quantity;
 
         Item item = itemRepository.findByProductSku(product); //TODO think about items who have the same product but in different carts
-        item.setSubtotal(item.getSubtotal() + addToSubtotal);
         item.setQuantity(item.getQuantity() + quantity);
+        item.setSubtotal(product1.getPrice() * item.getQuantity());
 
         itemRepository.save(item);
 

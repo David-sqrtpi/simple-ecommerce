@@ -88,10 +88,6 @@ public class CartService {
         System.out.println(items.size());
         for (Item item : items){
             total += item.getSubtotal();
-            System.out.println("Item id: " + item.getId() + "\n");
-            System.out.println("Item name: " + item.getProduct().getName() + "\n");
-            System.out.println("Item subtotal: " + item.getSubtotal() + "\n");
-            System.out.println("Cart total: " + total + "\n");
         }
 
         Cart cart1 = getOne(cart);
