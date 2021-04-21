@@ -20,23 +20,27 @@ public class ItemService {
 
     public void buildItem(String sku, int quantity, Cart cart){
         Product product = productService.getOne(sku);
-        long subtotal = product.getPrice()*quantity;
+        long subtotal = product.getPrice() * quantity;
 
         Item item = new Item(0, cart, product, quantity, subtotal);
 
         itemRepository.save(item);
     }
 
-    public Item changeItem(String product, int quantity, Cart cart) {
-        Product product1 = productService.getOne(product);
+    public void changeItem(String product, int quantity, String cart) {
 
-        Item item = itemRepository.findByProductSku(product); //TODO think about items who have the same product but in different carts
+        Item item = itemRepository.findByProductSkuAndCartUuid(product, cart);
         item.setQuantity(item.getQuantity() + quantity);
-        item.setSubtotal(product1.getPrice() * item.getQuantity());
-
+        item.setSubtotal(item.getQuantity() * item.getProduct().getPrice());
         itemRepository.save(item);
+    }
 
-        return item;
+    public void changeSubtotal(String product) {
+        List<Item> items = itemRepository.findByProductSku(product);
+        for (Item item:items){
+            item.setSubtotal(item.getProduct().getPrice() * item.getQuantity());
+        }
+        itemRepository.saveAll(items);
     }
 
     public List<Item> findByCartUuid(String cart){

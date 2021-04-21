@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, String> {
-    Item findByProductSku(String sku);
+    List<Item> findByProductSku(String sku);
+    Item findByProductSkuAndCartUuid(String product, String cart);
     List<Item> findByCartUuid(String cart);
 }

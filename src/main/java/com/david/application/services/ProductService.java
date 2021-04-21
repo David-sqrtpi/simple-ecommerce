@@ -16,6 +16,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ItemService itemService;
+
     public List<Product> listAll(){
         return productRepository.findAll();
     }
@@ -53,6 +56,8 @@ public class ProductService {
             Product oldProduct = productRepository.getOneBySku(sku);
             product.setUuid(oldProduct.getUuid());
             productRepository.save(product);
+
+            itemService.changeSubtotal(product.getSku());
             
             throw new ResponseStatusException(HttpStatus.OK,
                     "Product has been modified");

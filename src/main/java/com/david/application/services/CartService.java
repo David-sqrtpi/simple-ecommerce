@@ -42,7 +42,7 @@ public class CartService {
         Cart cart = getOne(cartUuid);
 
         if (hasProduct(cartUuid, productSku)) {
-            itemService.changeItem(productSku, productQuantity, cart);
+            itemService.changeItem(productSku, productQuantity, cartUuid);
         } else {
             itemService.buildItem(productSku, productQuantity, cart);
         }
@@ -85,7 +85,6 @@ public class CartService {
 
         List<Item> items = itemService.findByCartUuid(cart);
 
-        System.out.println(items.size());
         for (Item item : items){
             total += item.getSubtotal();
         }
