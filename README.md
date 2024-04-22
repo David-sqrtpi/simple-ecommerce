@@ -1,6 +1,6 @@
 # Simple Ecommerce
 This is a Spring boot application, it allows to manage the cart module of an ecommerce, the project uses a in-memory database with JPA.
-This project can be tested using any API tester like Postman
+This project can be tested using any API tester like Postman or the [simple-ecommerce-client](https://github.com/David-sqrtpi/simple-e-commerce-client).
 ## Endpoints
 For those methods who allows a request body it is a raw JSON
 | Method | Endpoint | Description | Response
